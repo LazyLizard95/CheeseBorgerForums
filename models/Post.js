@@ -9,13 +9,15 @@ class Post extends Model {
     }).then(() => {
       return Post.findOne({
         where: {
-          id: body.post_id
+          id: body.post_id,
+          topic: body.topic
         },
         attributes: [
           'id',
           'content',
           'title',
           'created_at',
+          'topic',
           [sequelize.literal('(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)'), 'vote_count']
         ],
         include: [
