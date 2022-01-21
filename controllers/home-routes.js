@@ -32,7 +32,7 @@ router.get('/', (req, res) => {
       const posts = dbPostData.map(post => post.get({ plain: true }));
 
       res.render('homepage', {
-        posts,
+        ...posts,
         loggedIn: req.session.loggedIn
       });
     })
@@ -126,7 +126,7 @@ router.get('/post/:general/:id', (req, res) => {
 
       const post = dbPostData.get({ plain: true });
       console.log(post);
-      res.render('single-post', {
+      res.render('general', {
         ...post,
         loggedIn: req.session.loggedIn
       });

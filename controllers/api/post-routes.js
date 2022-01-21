@@ -5,7 +5,7 @@ const withAuth = require('../../utils/auth');
 
 // get all users
 router.get('/', (req, res) => {
-  console.log('======================');
+  
   Post.findAll({
     attributes: [
       'id',
@@ -47,7 +47,7 @@ router.get('/:id', (req, res) => {
       'content',
       'title',
       'created_at',
-      'topic'
+      'topic',
       [sequelize.literal('(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)'), 'vote_count']
     ],
     include: [
