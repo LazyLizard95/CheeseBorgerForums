@@ -31,6 +31,13 @@ Comment.init(
         model: 'post',
         key: 'id'
       }
+    },
+    topic: {
+      type: DataTypes.STRING,
+      references: {
+        model: 'post',
+        key: 'topic'
+      }
     }
   },
   {
