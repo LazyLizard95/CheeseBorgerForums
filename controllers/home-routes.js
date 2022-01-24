@@ -5,41 +5,43 @@ const { Post, User, Comment, Vote } = require('../models');
 // get all posts for homepage
 router.get('/', (req, res) => {
   console.log('======================');
-  Post.findAll({
-    attributes: [
-      'id',
-      'content',
-      'title',
-      'created_at',
-      [sequelize.literal('(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)'), 'vote_count']
-    ],
-    include: [
-      {
-        model: Comment,
-        attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
-        include: {
-          model: User,
-          attributes: ['username', 'admin']
-        }
-      },
-      {
-        model: User,
-        attributes: ['username', 'admin']
-      }
-    ]
-  })
-    .then(dbPostData => {
-      const posts = dbPostData.map(post => post.get({ plain: true }));
-
-      res.render('homepage', {
-        ...posts,
-        loggedIn: req.session.loggedIn
+  // // Post.findAll({
+  // //   attributes: [
+  // //     'id',
+  // //     'content',
+  // //     'title',
+  // //     'created_at',
+  // //     [sequelize.literal('(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)'), 'vote_count']
+  // //   ],
+  //   include: [
+  //     {
+  //       model: Comment,
+  //       attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
+  //       include: {
+  //         model: User,
+  //         attributes: ['username', 'admin']
+  //       }
+  //     },
+  //     {
+  //       model: User,
+  //       attributes: ['username', 'admin']
+  //     }
+  //   ]
+  // })
+  //   .then(dbPostData => {
+  //     const posts = dbPostData.map(post => post.get({ plain: true }));
+  //     console.log(posts)
+  const categories = ['general', 'memes', 'random', 'games']    
+  res.render('homepage', {
+        categories,
+        loggedIn: req.session.loggedIn,
+        username: req.session.username
       });
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json(err);
-    });
+    // })
+    // .catch(err => {
+    //   console.log(err);
+    //   res.status(500).json(err);
+    // });
 });
 
 // get single post
@@ -80,7 +82,8 @@ router.get('/post/:id', (req, res) => {
       console.log(post);
       res.render('single-post', {
         ...post,
-        loggedIn: req.session.loggedIn
+        loggedIn: req.session.loggedIn,
+        username: req.session.username
       });
     })
     .catch(err => {
@@ -89,11 +92,11 @@ router.get('/post/:id', (req, res) => {
     });
 });
 //get general posts
-router.get('/post/:general/:id', (req, res) => {
-  Post.findOne({
+router.get('/posts/:topic', (req, res) => {
+  Post.findAll({
     where: {
-      id: req.params.id,
-      general: req.params.topic
+      // id: req.params.id,
+      topic: req.params.topic
     },
     attributes: [
       'id',
@@ -124,11 +127,12 @@ router.get('/post/:general/:id', (req, res) => {
         return;
       }
 
-      const post = dbPostData.get({ plain: true });
-      console.log(post);
-      res.render('general', {
-        ...post,
-        loggedIn: req.session.loggedIn
+      const posts = dbPostData.map(post => post.get({ plain: true }));
+      console.log(posts);
+      res.render('topic', {
+        posts,
+        loggedIn: req.session.loggedIn,
+        username: req.session.username
       });
     })
     .catch(err => {
@@ -138,7 +142,9 @@ router.get('/post/:general/:id', (req, res) => {
 });
 
 router.get('/login', (req, res) => {
+  console.log("login")
   if (req.session.loggedIn) {
+    console.log("redirect")
     res.redirect('/');
     return;
   }
