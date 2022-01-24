@@ -1,13 +1,13 @@
 <section>
   
-  <h2>Create New Group</h2>
+  <h2>Create New Post</h2>
   <form class="new-post-form">
     <div>
-      <label for="post-title">Group Name</label>
+      <label for="post-title">Title</label>
       <input type="text" id="post-title" name="post-title" value="test" />
     </div>
     <div>
-      <label for="content">Group Description</label>
+      <label for="content">Content</label>
       <textarea id="content" name="content">TEST</textarea>
     </div>
     <button type="submit" class="btn">Create</button>
@@ -35,7 +35,7 @@
   <div class="meta">
     {{vote_count}} {{format_plural "point" vote_count}} by {{user.username}} on {{format_date created_at}}
     |
-    <a href="/post/{{id}}">{{comments.length}} {{format_plural "comment" comments.length}}</a>
+    <a href="/post/{{id}}/">{{comments.length}} {{format_plural "comment" comments.length}}</a>
   </div>
 </article>
       <a href="/dashboard/edit/{{id}}" class="edit-link">Edit post</a>

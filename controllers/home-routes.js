@@ -2,46 +2,15 @@ const router = require('express').Router();
 const sequelize = require('../config/connection');
 const { Post, User, Comment, Vote } = require('../models');
 
-// get all posts for homepage
+// sets up the topic routes
 router.get('/', (req, res) => {
-  console.log('======================');
-  // // Post.findAll({
-  // //   attributes: [
-  // //     'id',
-  // //     'content',
-  // //     'title',
-  // //     'created_at',
-  // //     [sequelize.literal('(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)'), 'vote_count']
-  // //   ],
-  //   include: [
-  //     {
-  //       model: Comment,
-  //       attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
-  //       include: {
-  //         model: User,
-  //         attributes: ['username', 'admin']
-  //       }
-  //     },
-  //     {
-  //       model: User,
-  //       attributes: ['username', 'admin']
-  //     }
-  //   ]
-  // })
-  //   .then(dbPostData => {
-  //     const posts = dbPostData.map(post => post.get({ plain: true }));
-  //     console.log(posts)
-  const categories = ['general', 'memes', 'random', 'games']    
+  const categories = ['general', 'memes', 'random', 'games']
   res.render('homepage', {
-        categories,
-        loggedIn: req.session.loggedIn,
-        username: req.session.username
-      });
-    // })
-    // .catch(err => {
-    //   console.log(err);
-    //   res.status(500).json(err);
-    // });
+    categories,
+    loggedIn: req.session.loggedIn,
+    username: req.session.username
+  });
+
 });
 
 // get single post
