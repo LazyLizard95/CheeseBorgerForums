@@ -45,16 +45,18 @@ router.get('/', (req, res) => {
 });
 
 // get single post
-router.get('/post/:id', (req, res) => {
+router.get('/posts/:topic/:id', (req, res) => {
   Post.findOne({
     where: {
-      id: req.params.id
+      id: req.params.id,
+      topic: req.params.topic
     },
     attributes: [
       'id',
       'content',
       'title',
       'created_at',
+      'topic'
       [sequelize.literal('(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)'), 'vote_count']
     ],
     include: [
@@ -91,7 +93,7 @@ router.get('/post/:id', (req, res) => {
       res.status(500).json(err);
     });
 });
-//get general posts
+//get single
 router.get('/posts/:topic', (req, res) => {
   Post.findAll({
     where: {
