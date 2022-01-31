@@ -79,7 +79,7 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', withAuth, (req, res) => {
-  // expects {title: 'Taskmaster goes public!', content: 'https://taskmaster.com/press', user_id: 1}
+  
   Post.create({
     title: req.body.title,
     content: req.body.content,
@@ -95,7 +95,7 @@ router.post('/', withAuth, (req, res) => {
 
 router.put('/upvote', withAuth, (req, res) => {
   // custom static method created in models/Post.js
-  Post.upvote({ ...req.body, user_id: req.session.user_id }, { Vote, Comment, User })
+  Vote.create({ ...req.body, user_id: req.session.user_id })
     .then(updatedVoteData => res.json(updatedVoteData))
     .catch(err => {
       console.log(err);

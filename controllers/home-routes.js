@@ -14,19 +14,20 @@ router.get('/', (req, res) => {
 });
 
 // get single post
-router.get('/posts/:topic/:id', (req, res) => {
-  Post.findOne({
+router.get('/post/:id', (req, res) => {
+  console.log("Single post");
+  Post.findAll({
     where: {
-      id: req.params.id,
-      topic: req.params.topic
+      id: req.params.id
+      // topic: req.params.topic
     },
     attributes: [
       'id',
       'content',
       'title',
       'created_at',
-      'topic'
-      [sequelize.literal('(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)'), 'vote_count']
+      'topic',
+      [sequelize.literal('(SELECT COUNT(*) FROM vote WHERE post_id = vote.post_id)'), 'vote_count']
     ],
     include: [
       {
@@ -49,7 +50,7 @@ router.get('/posts/:topic/:id', (req, res) => {
         return;
       }
 
-      const post = dbPostData.get({ plain: true });
+      const post = dbPostData[0].get({ plain: true });
       console.log(post);
       res.render('single-post', {
         ...post,
@@ -75,7 +76,7 @@ router.get('/posts/:topic', (req, res) => {
       'title',
       'created_at',
       'topic',
-      [sequelize.literal('(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)'), 'vote_count']
+      [sequelize.literal('(SELECT COUNT(*) FROM vote WHERE post_id = vote.post_id)'), 'vote_count']
     ],
     include: [
       {

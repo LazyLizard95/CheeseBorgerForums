@@ -5,9 +5,11 @@
     <span>({{content}})</span>
   </div>
   <div class="meta">
-    By {{user.username}} on {{format_date created_at}}
+    By {{user.username}} on {{format_date created_at}} <button class="btn btn-primary" id="upvote-btn">+1</button>
     |
-    <a href="/{{topic}}/post/{{id}}/">{{comments.length}} {{format_plural "comment" comments.length}}</a>
+    <a href="/post/{{id}}">{{comments.length}} {{format_plural "comment" comments.length}}</a>
+    |
+    <p>Votes: {{vote_count}}</p>
   </div>
 </article>
 

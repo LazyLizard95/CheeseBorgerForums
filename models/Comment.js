@@ -34,10 +34,7 @@ Comment.init(
     },
     topic: {
       type: DataTypes.STRING,
-      references: {
-        model: 'post',
-        key: 'topic'
-      }
+      require: true
     }
   },
   {
